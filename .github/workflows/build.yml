@@ -28,7 +28,7 @@ jobs:
 
       - name: Build with build-wrapper
         run: |
-          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} msbuild
+          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake
           # Replace 'make' with your actual build command
 
       - name: Run sonar-scanner
