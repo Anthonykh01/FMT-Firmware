@@ -1,15 +1,5 @@
-name: Main Workflow
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    types: [opened, synchronize, reopened]
-
 jobs:
   build-and-analyze:
-    name: Build and Analyze with SonarCloud
     runs-on: ubuntu-latest
     env:
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
@@ -17,15 +7,17 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: Install sonar-scanner and build-wrapper
-        uses: sonarsource/sonarcloud-github-c-cpp@v2
+      - name: Manually download and install build-wrapper
+        run: |
+          curl -LsS https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip -o build-wrapper-linux-x86.zip
+          unzip build-wrapper-linux-x86.zip
+          chmod +x build-wrapper-linux-x86/build-wrapper-linux-x86-64
 
       - name: Build with build-wrapper
         run: |
-          ./build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} make 
+          ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} make
+          # Replace 'make' with your actual build command
 
       - name: Run sonar-scanner
         env:
