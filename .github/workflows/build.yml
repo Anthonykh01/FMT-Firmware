@@ -1,5 +1,15 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
   build-and-analyze:
+    name: Build and Analyze with SonarCloud
     runs-on: ubuntu-latest
     env:
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
@@ -7,6 +17,8 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Manually download and install build-wrapper
         run: |
